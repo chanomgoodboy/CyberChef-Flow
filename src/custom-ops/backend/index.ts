@@ -1,0 +1,31 @@
+// Barrel file — side-effect imports register each backend tool operation.
+
+import './Backend7z';
+import './BackendAircrack';
+import './BackendApktool';
+import './BackendBinwalk';
+import './BackendExiftool';
+import './BackendFfmpeg';
+import './BackendFfprobe';
+import './BackendFile';
+import './BackendForemost';
+import './BackendGeneric';
+import './BackendHashcat';
+import './BackendHashExtract';
+import './BackendIdentify';
+import './BackendJadx';
+import './BackendJohn';
+import './BackendOpenssl';
+import './BackendPdfinfo';
+import './BackendPdftotext';
+import './BackendPngcheck';
+import './BackendQpdf';
+import './BackendStegcracker';
+import './BackendStegseek';
+import './BackendSteghide';
+import './BackendStrings';
+import './BackendTesseract';
+import './BackendTshark';
+import './BackendXxd';
+import './BackendYara';
+import './BackendZsteg';
