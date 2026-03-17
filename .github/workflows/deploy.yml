@@ -1,0 +1,67 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout CyberChef-Flow
+        uses: actions/checkout@v4
+        with:
+          path: cyberweb
+
+      - name: Checkout CyberChef
+        uses: actions/checkout@v4
+        with:
+          repository: gchq/CyberChef
+          path: CyberChef
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            cyberweb/package-lock.json
+            CyberChef/package-lock.json
+
+      - name: Install CyberChef dependencies
+        run: cd CyberChef && npm ci
+
+      - name: Install CyberChef-Flow dependencies
+        run: cd cyberweb && npm ci
+
+      - name: Generate CyberChef config
+        run: cd cyberweb && node --import ./scripts/register-loader.mjs scripts/generate-config.mjs
+
+      - name: Build
+        run: cd cyberweb && NODE_OPTIONS="--max-old-space-size=8192" npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: cyberweb/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

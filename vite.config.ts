@@ -100,6 +100,7 @@ export { pdf, cdf };
 // Buffer/process globals are injected via src/polyfills.ts (imported in main.tsx)
 
 export default defineConfig({
+  base: '/CyberChef-Flow/',
   plugins: [
     cyberchefPatches(),
     react(),
